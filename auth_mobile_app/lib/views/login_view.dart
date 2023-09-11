@@ -1,6 +1,7 @@
 import 'package:auth_mobile_app/views/widgets/custom_field.dart';
 import 'package:auth_mobile_app/views/widgets/custom_stack.dart';
 import 'package:auth_mobile_app/views/widgets/custom_text.dart';
+import 'package:auth_mobile_app/views/widgets/remember_me_row.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {
@@ -22,6 +23,7 @@ class LoginView extends StatelessWidget {
             children: const [
               CustomField(hint: 'Username', icon: 'assets/icons/X Icon.svg'),
               CustomField(hint: 'Password', icon: 'assets/icons/Hide.svg'),
+              RememberMeRow(text: 'Forgot password?'),
             ],
           ),
         )
