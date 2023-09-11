@@ -1,3 +1,4 @@
+import 'package:auth_mobile_app/views/login_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,7 +12,7 @@ class AuthMobileApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const Scaffold(),
+      home: const LoginView(),
       theme: ThemeData(fontFamily: 'Inter'),
     );
   }
