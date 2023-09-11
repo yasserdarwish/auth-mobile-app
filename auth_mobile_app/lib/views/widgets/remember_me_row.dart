@@ -20,14 +20,17 @@ class _RememberMeRowState extends State<RememberMeRow> {
           SizedBox(
             height: 17,
             width: 16,
-            child: Checkbox.adaptive(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-                value: isChecked,
-                onChanged: (checked) {
-                  isChecked = checked!;
-                  setState(() {});
-                }),
+            child: Transform.scale(
+              scale: 0.8,
+              child: Checkbox.adaptive(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4)),
+                  value: isChecked,
+                  onChanged: (checked) {
+                    isChecked = checked!;
+                    setState(() {});
+                  }),
+            ),
           ),
           const SizedBox(width: 8),
           const Text('Remember me',

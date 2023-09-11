@@ -1,6 +1,8 @@
+import 'package:auth_mobile_app/views/widgets/custom_button.dart';
 import 'package:auth_mobile_app/views/widgets/custom_field.dart';
 import 'package:auth_mobile_app/views/widgets/custom_stack.dart';
 import 'package:auth_mobile_app/views/widgets/custom_text.dart';
+import 'package:auth_mobile_app/views/widgets/have_account_row.dart';
 import 'package:auth_mobile_app/views/widgets/remember_me_row.dart';
 import 'package:flutter/material.dart';
 
@@ -20,10 +22,15 @@ class LoginView extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
-            children: const [
-              CustomField(hint: 'Username', icon: 'assets/icons/X Icon.svg'),
-              CustomField(hint: 'Password', icon: 'assets/icons/Hide.svg'),
-              RememberMeRow(text: 'Forgot password?'),
+            children: [
+              const CustomField(
+                  hint: 'Username', icon: 'assets/icons/X Icon.svg'),
+              const CustomField(
+                  hint: 'Password', icon: 'assets/icons/Hide.svg'),
+              const RememberMeRow(text: 'Forgot password?'),
+              CustomButton(onPressed: () {}, text: 'Log in'),
+              const HaveAccountRow(
+                  text: 'Don\'t have an account?', button: 'Register')
             ],
           ),
         )
