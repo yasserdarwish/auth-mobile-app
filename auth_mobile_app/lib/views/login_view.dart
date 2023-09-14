@@ -18,6 +18,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  AutovalidateMode? autovalidateMode = AutovalidateMode.disabled;
   bool obsecured = true;
   @override
   Widget build(BuildContext context) {
@@ -30,41 +32,50 @@ class _LoginViewState extends State<LoginView> {
         const CustomTitle(text: 'Log in to your account'),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              CustomField(
-                hint: 'Username',
-                icon: 'assets/icons/X Icon.svg',
-                controller: username,
-                onPressed: () {
-                  username.clear();
-                  setState(() {});
-                },
-              ),
-              CustomField(
-                obsecured: obsecured,
-                hint: 'Password',
-                icon: 'assets/icons/Hide.svg',
-                onPressed: () {
-                  obsecured = !obsecured;
-                  setState(() {});
-                },
-                controller: password,
-              ),
-              RememberMeRow(
-                text: 'Forgot password?',
-                username: username.toString(),
-                password: password.toString(),
-              ),
-              CustomButton(
-                  onPressed: () async {
-                    BlocProvider.of<AuthCubit>(context)
-                        .saveCrud(username, password);
+          child: Form(
+            key: formKey,
+            autovalidateMode: autovalidateMode,
+            child: Column(
+              children: [
+                CustomField(
+                  hint: 'Username',
+                  icon: 'assets/icons/X Icon.svg',
+                  controller: username,
+                  onPressed: () {
+                    username.clear();
+                    setState(() {});
                   },
-                  text: 'Log in'),
-              const HaveAccountRow(
-                  text: 'Don\'t have an account?', button: 'Register')
-            ],
+                ),
+                CustomField(
+                  obsecured: obsecured,
+                  hint: 'Password',
+                  icon: 'assets/icons/Hide.svg',
+                  onPressed: () {
+                    obsecured = !obsecured;
+                    setState(() {});
+                  },
+                  controller: password,
+                ),
+                RememberMeRow(
+                  text: 'Forgot password?',
+                  username: username.toString(),
+                  password: password.toString(),
+                ),
+                CustomButton(
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        BlocProvider.of<AuthCubit>(context)
+                            .saveCrud(username, password);
+                      } else {
+                        autovalidateMode = AutovalidateMode.always;
+                        setState(() {});
+                      }
+                    },
+                    text: 'Log in'),
+                const HaveAccountRow(
+                    text: 'Don\'t have an account?', button: 'Register')
+              ],
+            ),
           ),
         )
       ],
