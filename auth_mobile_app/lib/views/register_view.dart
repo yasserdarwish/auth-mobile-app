@@ -73,6 +73,7 @@ class _RegisterViewState extends State<RegisterView> {
                   password: password.toString(),
                 ),
                 CustomButton(
+                    color: const Color(0xff007BFF),
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
                         BlocProvider.of<AuthCubit>(context)

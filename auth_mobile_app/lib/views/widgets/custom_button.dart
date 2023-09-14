@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, this.onPressed, required this.text});
+  const CustomButton(
+      {super.key, this.onPressed, required this.text, this.color});
   final void Function()? onPressed;
   final String text;
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,7 +17,7 @@ class CustomButton extends StatelessWidget {
         height: 44,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         onPressed: onPressed,
-        color: Color(0xff007BFF),
+        color: color,
         child: Text(
           text,
           style: const TextStyle(

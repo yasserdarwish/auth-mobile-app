@@ -1,5 +1,6 @@
 import 'package:auth_mobile_app/cubits/cubit/auth_cubit.dart';
 import 'package:auth_mobile_app/extensions.dart';
+import 'package:auth_mobile_app/views/profile_view.dart';
 import 'package:auth_mobile_app/views/register_view.dart';
 import 'package:auth_mobile_app/views/widgets/custom_button.dart';
 import 'package:auth_mobile_app/views/widgets/custom_field.dart';
@@ -64,10 +65,14 @@ class _LoginViewState extends State<LoginView> {
                   password: password.toString(),
                 ),
                 CustomButton(
+                    color: const Color(0xff007BFF),
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
                         BlocProvider.of<AuthCubit>(context)
                             .saveCrud(username, password);
+                        context.navigateTo(ProfileView(
+                          username: username,
+                        ));
                       } else {
                         autovalidateMode = AutovalidateMode.always;
                         setState(() {});
