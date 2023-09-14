@@ -19,6 +19,7 @@ class CustomTextFormField extends StatelessWidget {
         if (value?.isEmpty ?? true) {
           return 'This field can\'t be empty';
         }
+        return null;
       },
       obscureText: obsecured,
       controller: controller,

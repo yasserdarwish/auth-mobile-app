@@ -1,6 +1,6 @@
 import 'package:auth_mobile_app/cubits/cubit/auth_cubit.dart';
 import 'package:auth_mobile_app/extensions.dart';
-import 'package:auth_mobile_app/views/register_view.dart';
+import 'package:auth_mobile_app/views/login_view.dart';
 import 'package:auth_mobile_app/views/widgets/custom_button.dart';
 import 'package:auth_mobile_app/views/widgets/custom_field.dart';
 import 'package:auth_mobile_app/views/widgets/custom_stack.dart';
@@ -10,14 +10,14 @@ import 'package:auth_mobile_app/views/widgets/remember_me_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _RegisterViewState extends State<RegisterView> {
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -31,7 +31,7 @@ class _LoginViewState extends State<LoginView> {
       children: [
         const CustomStack(),
         const SizedBox(height: 80),
-        const CustomTitle(text: 'Log in to your account'),
+        const CustomTitle(text: 'Create new account'),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Form(
@@ -41,6 +41,15 @@ class _LoginViewState extends State<LoginView> {
               children: [
                 CustomField(
                   hint: 'Username',
+                  icon: 'assets/icons/X Icon.svg',
+                  controller: username,
+                  onPressed: () {
+                    username.clear();
+                    setState(() {});
+                  },
+                ),
+                CustomField(
+                  hint: 'Email',
                   icon: 'assets/icons/X Icon.svg',
                   controller: username,
                   onPressed: () {
@@ -59,7 +68,7 @@ class _LoginViewState extends State<LoginView> {
                   controller: password,
                 ),
                 RememberMeRow(
-                  text: 'Forgot password?',
+                  text: 'Have a proplem?',
                   username: username.toString(),
                   password: password.toString(),
                 ),
@@ -73,11 +82,11 @@ class _LoginViewState extends State<LoginView> {
                         setState(() {});
                       }
                     },
-                    text: 'Log in'),
+                    text: 'Register'),
                 HaveAccountRow(
-                    text: 'Don\'t have an account?',
-                    button: 'Register',
-                    onTap: () => context.navigateTo(const RegisterView()))
+                    text: 'Already have an account?',
+                    button: 'Log in',
+                    onTap: () => context.navigateTo(const LoginView()))
               ],
             ),
           ),
