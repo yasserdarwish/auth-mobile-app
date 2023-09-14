@@ -1,15 +1,19 @@
+import 'package:auth_mobile_app/cubits/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RememberMeRow extends StatefulWidget {
-  const RememberMeRow({super.key, required this.text});
+  const RememberMeRow(
+      {super.key, required this.text, this.username, this.password});
   final String text;
+  final String? username;
+  final String? password;
 
   @override
   State<RememberMeRow> createState() => _RememberMeRowState();
 }
 
 class _RememberMeRowState extends State<RememberMeRow> {
-  bool isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,9 +29,10 @@ class _RememberMeRowState extends State<RememberMeRow> {
               child: Checkbox.adaptive(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4)),
-                  value: isChecked,
+                  value: BlocProvider.of<AuthCubit>(context).isChecked,
                   onChanged: (checked) {
-                    isChecked = checked!;
+                    BlocProvider.of<AuthCubit>(context).isChecked =
+                        checked ?? false;
                     setState(() {});
                   }),
             ),

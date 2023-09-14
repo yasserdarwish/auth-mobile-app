@@ -3,10 +3,17 @@ import 'package:flutter/material.dart';
 
 class CustomField extends StatelessWidget {
   const CustomField(
-      {super.key, required this.icon, this.onPressed, required this.hint});
+      {super.key,
+      required this.icon,
+      this.onPressed,
+      required this.hint,
+      this.controller,
+      this.obsecured = false});
   final String hint;
   final String icon;
   final void Function()? onPressed;
+  final TextEditingController? controller;
+  final bool obsecured;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,6 +29,8 @@ class CustomField extends StatelessWidget {
           CustomTextFormField(
             icon: icon,
             onPressed: onPressed,
+            controller: controller,
+            obsecured: obsecured,
           ),
         ],
       ),
