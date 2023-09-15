@@ -1,5 +1,6 @@
 import 'package:auth_mobile_app/cubits/cubit/auth_cubit.dart';
 import 'package:auth_mobile_app/extensions.dart';
+import 'package:auth_mobile_app/models/user_model.dart';
 import 'package:auth_mobile_app/views/login_view.dart';
 import 'package:auth_mobile_app/views/profile_view.dart';
 import 'package:auth_mobile_app/views/widgets/custom_button.dart';
@@ -26,7 +27,7 @@ class _RegisterViewState extends State<RegisterView> {
   AutovalidateMode? autovalidateMode = AutovalidateMode.disabled;
   bool obsecured = true;
   bool isLoading = false;
-
+  UserModel? user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +82,9 @@ class _RegisterViewState extends State<RegisterView> {
                     }
                     if (state is AuthSuccess) {
                       context.navigateTo(ProfileView(
-                        username: username,
+                        username: user!.username,
+                        email: user!.email,
+                        gender: user!.gender,
                       ));
                     }
                     if (state is AuthFailure) {
@@ -96,7 +99,7 @@ class _RegisterViewState extends State<RegisterView> {
                         color: const Color(0xff007BFF),
                         onPressed: () async {
                           if (formKey.currentState!.validate()) {
-                            BlocProvider.of<AuthCubit>(context)
+                            user = await BlocProvider.of<AuthCubit>(context)
                                 .login(username.text, password.text);
                           } else {
                             autovalidateMode = AutovalidateMode.always;
