@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RememberMeRow extends StatefulWidget {
-  const RememberMeRow(
-      {super.key, required this.text, this.username, this.password});
+  const RememberMeRow({super.key, required this.text});
   final String text;
-  final String? username;
-  final String? password;
 
   @override
   State<RememberMeRow> createState() => _RememberMeRowState();

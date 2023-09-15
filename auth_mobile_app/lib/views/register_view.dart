@@ -1,6 +1,7 @@
 import 'package:auth_mobile_app/cubits/cubit/auth_cubit.dart';
 import 'package:auth_mobile_app/extensions.dart';
 import 'package:auth_mobile_app/views/login_view.dart';
+import 'package:auth_mobile_app/views/profile_view.dart';
 import 'package:auth_mobile_app/views/widgets/custom_button.dart';
 import 'package:auth_mobile_app/views/widgets/custom_field.dart';
 import 'package:auth_mobile_app/views/widgets/custom_stack.dart';
@@ -19,15 +20,18 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   TextEditingController username = TextEditingController();
+  TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AutovalidateMode? autovalidateMode = AutovalidateMode.disabled;
   bool obsecured = true;
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: ListView(
-      padding: EdgeInsets.zero,
+      padding: const EdgeInsets.only(bottom: 16),
       children: [
         const CustomStack(),
         const SizedBox(height: 80),
@@ -51,7 +55,7 @@ class _RegisterViewState extends State<RegisterView> {
                 CustomField(
                   hint: 'Email',
                   icon: 'assets/icons/X Icon.svg',
-                  controller: username,
+                  controller: email,
                   onPressed: () {
                     username.clear();
                     setState(() {});
@@ -67,23 +71,41 @@ class _RegisterViewState extends State<RegisterView> {
                   },
                   controller: password,
                 ),
-                RememberMeRow(
+                const RememberMeRow(
                   text: 'Have a proplem?',
-                  username: username.toString(),
-                  password: password.toString(),
                 ),
-                CustomButton(
-                    color: const Color(0xff007BFF),
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        BlocProvider.of<AuthCubit>(context)
-                            .saveCrud(username, password);
-                      } else {
-                        autovalidateMode = AutovalidateMode.always;
-                        setState(() {});
-                      }
-                    },
-                    text: 'Register'),
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthLoading) {
+                      isLoading = true;
+                    }
+                    if (state is AuthSuccess) {
+                      context.navigateTo(ProfileView(
+                        username: username,
+                      ));
+                    }
+                    if (state is AuthFailure) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(state.errMsg)));
+                      isLoading = false;
+                    }
+                  },
+                  builder: (context, state) {
+                    return CustomButton(
+                        isLoading: isLoading,
+                        color: const Color(0xff007BFF),
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            BlocProvider.of<AuthCubit>(context)
+                                .login(username.text, password.text);
+                          } else {
+                            autovalidateMode = AutovalidateMode.always;
+                            setState(() {});
+                          }
+                        },
+                        text: 'Register');
+                  },
+                ),
                 HaveAccountRow(
                     text: 'Already have an account?',
                     button: 'Log in',

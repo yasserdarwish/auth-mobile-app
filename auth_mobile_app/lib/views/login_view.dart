@@ -24,6 +24,7 @@ class _LoginViewState extends State<LoginView> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AutovalidateMode? autovalidateMode = AutovalidateMode.disabled;
   bool obsecured = true;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,26 +60,41 @@ class _LoginViewState extends State<LoginView> {
                   },
                   controller: password,
                 ),
-                RememberMeRow(
+                const RememberMeRow(
                   text: 'Forgot password?',
-                  username: username.toString(),
-                  password: password.toString(),
                 ),
-                CustomButton(
-                    color: const Color(0xff007BFF),
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        BlocProvider.of<AuthCubit>(context)
-                            .saveCrud(username, password);
-                        context.navigateTo(ProfileView(
-                          username: username,
-                        ));
-                      } else {
-                        autovalidateMode = AutovalidateMode.always;
-                        setState(() {});
-                      }
-                    },
-                    text: 'Log in'),
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthLoading) {
+                      isLoading = true;
+                    }
+                    if (state is AuthSuccess) {
+                      context.navigateTo(ProfileView(
+                        username: username,
+                      ));
+                    }
+                    if (state is AuthFailure) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(state.errMsg)));
+                      isLoading = false;
+                    }
+                  },
+                  builder: (context, state) {
+                    return CustomButton(
+                        isLoading: isLoading,
+                        color: const Color(0xff007BFF),
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            BlocProvider.of<AuthCubit>(context)
+                                .login(username.text, password.text);
+                          } else {
+                            autovalidateMode = AutovalidateMode.always;
+                            setState(() {});
+                          }
+                        },
+                        text: 'Log in');
+                  },
+                ),
                 HaveAccountRow(
                     text: 'Don\'t have an account?',
                     button: 'Register',
